@@ -129,4 +129,8 @@ contract FundMeTest is StdCheats, Test {
                 fundMe.getOwner().balance - startingOwnerBalance
         );
     }
+
+    function testPriceFeedVersionIsCorrect() public {
+        assertEq(fundMe.getVersion(), 4);
+    }
 }
