@@ -19,46 +19,24 @@ contract HelperConfig is Script {
     constructor() {
         if (block.chainid == 11155111) {
             activeNetworkConfig = getSepoliaEthConfig();
-        } else if (block.chainid == 1) {
-            activeNetworkConfig = getMainnetEthConfig();
         } else {
             activeNetworkConfig = getOrCreateAnvilEthConfig();
         }
     }
 
-    function getSepoliaEthConfig()
-        public
-        pure
-        returns (NetworkConfig memory sepoliaNetworkConfig)
-    {
+    function getSepoliaEthConfig() public pure returns (NetworkConfig memory sepoliaNetworkConfig) {
         sepoliaNetworkConfig = NetworkConfig({
-            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306 // ETH / USD (Sepolia)
+            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306 // ETH / USD
         });
     }
 
-    function getMainnetEthConfig()
-        public
-        pure
-        returns (NetworkConfig memory mainnetNetworkConfig)
-    {
-        mainnetNetworkConfig = NetworkConfig({
-            priceFeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419 // ETH / USD (Mainnet)
-        });
-    }
-
-    function getOrCreateAnvilEthConfig()
-        public
-        returns (NetworkConfig memory anvilNetworkConfig)
-    {
+    function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory anvilNetworkConfig) {
         // Check to see if we set an active network config
         if (activeNetworkConfig.priceFeed != address(0)) {
             return activeNetworkConfig;
         }
         vm.startBroadcast();
-        MockV3Aggregator mockPriceFeed = new MockV3Aggregator(
-            DECIMALS,
-            INITIAL_PRICE
-        );
+        MockV3Aggregator mockPriceFeed = new MockV3Aggregator(DECIMALS, INITIAL_PRICE);
         vm.stopBroadcast();
         emit HelperConfig__CreatedMockPriceFeed(address(mockPriceFeed));
 

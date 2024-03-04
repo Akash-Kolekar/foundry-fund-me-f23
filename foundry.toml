@@ -6,6 +6,7 @@ remappings = [
     '@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/',
 ]
 ffi = true
+fs_permissions = [{ access = "read", path = "./broadcast" }]
 
 [etherscan]
 mainnet = { key = "${ETHERSCAN_API_KEY}" }

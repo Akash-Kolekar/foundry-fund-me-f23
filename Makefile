@@ -33,17 +33,23 @@ format :; forge fmt
 
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
-NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+# NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+# NETWORK_ARGS := --rpc-url http://localhost:8545 --account defaultKey --broadcast
+NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account God --sender 0xB58634C4465D93A03801693FD6d76997C797e42A --broadcast
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
-	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+    # NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account God --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
+
+// For deploying Interactions.s.sol:FundFundMe as well as for Interactions.s.sol:WithdrawFundMe we have to include a sender's address `--sender <ADDRESS>`.
+SENDER_ADDRESS := <sender's address> 
 
 deploy:
 	@forge script script/DeployFundMe.s.sol:DeployFundMe $(NETWORK_ARGS)
 
 fund:
-	@forge script script/Interactions.s.sol:FundFundMe $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:FundFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
 
 withdraw:
-	@forge script script/Interactions.s.sol:WithdrawFundMe $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:WithdrawFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
