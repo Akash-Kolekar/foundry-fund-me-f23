@@ -35,7 +35,7 @@ anvil :; anvil -m 'test test test test test test test test test test test junk' 
 
 # NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 # NETWORK_ARGS := --rpc-url http://localhost:8545 --account defaultKey --broadcast
-NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account God --sender 0xB58634C4465D93A03801693FD6d76997C797e42A --broadcast
+NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account God --sender $(SENDER_ADDRESS) --broadcast
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
     # NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
