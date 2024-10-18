@@ -8,6 +8,10 @@
   - [Deploy:](#deploy)
   - [Testing](#testing)
     - [Test Coverage](#test-coverage)
+  - [Local zkSync](#local-zksync)
+    - [(Additional) Requirements](#additional-requirements)
+    - [Setup local zkSync node](#setup-local-zksync-node)
+    - [Deploy to local zkSync node](#deploy-to-local-zksync-node)
 - [Deployment to a testnet or mainnet](#deployment-to-a-testnet-or-mainnet)
   - [Scripts](#scripts)
     - [Withdraw](#withdraw)
@@ -79,6 +83,59 @@ forge test --fork-url $SEPOLIA_RPC_URL
 forge coverage
 ```
 
+## Local zkSync
+
+The instruction here will allow you to work with this repo on zkSync.
+
+### (Additional) Requirements
+
+In addition to the requirements above, you will need:
+- [foundry-zkSync](https://foundry-book.zksync.io/)
+- You'll know you did it right if you can run `forge --version` and you see a response like `forge 0.0.2 (15bec2f 2024-10-15T00:25:04.686508860Z)`. 
+- [npx & npm](https://docs.npmjs.com/cli/v10/commands/npm-install)
+- [npx and npm](https://docs.npmjs.com/cli/v10/commands/npm-install) / [node.js](https://nodejs.org/en/download/package-manager)
+- You'll know you did it right if you can run `npm --version` and you see the response like `10.8.2` and `npx --version` and you see response like `10.8.2` or `node -v` and you see the response like `v20.18.0`.
+- [docker](https://docs.docker.com/engine/install/)
+- You'll know you did it right if you can run `docker --version` and you see the response like `Docker version 26.1.4, build 5650f9b`
+- Then, you'll want the daemon running, you'll know it's running if you can run `docker --info` and in the output you'll see something like the following to know it's running:
+```bash
+Client:
+ Context:    default
+ Debug Mode: false
+```
+
+
+### Setup local zkSync node 
+
+Run the following:
+
+```bash
+npx zksync-cli dev config
+```
+
+And select: `In memory node` and do not select any additional modules.
+
+Then run:
+```bash
+npx zksync-cli dev start
+```
+
+And you'll get an output like:
+```
+In memory node started v0.1.0-alpha.22:
+ - zkSync Node (L2):
+  - Chain ID: 260
+  - RPC URL: http://127.0.0.1:8011
+  - Rich accounts: https://era.zksync.io/docs/tools/testing/era-test-node.html#use-pre-configured-rich-wallets
+```
+
+### Deploy to local zkSync node
+
+```bash
+make deploy-zk
+```
+
+This will deploy a mock price feed and a fund me contract to the zkSync node.
 
 # Deployment to a testnet or mainnet
 
