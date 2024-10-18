@@ -132,7 +132,7 @@ In memory node started v0.1.0-alpha.22:
 ### Deploy to local zkSync node
 
 ```bash
-make deploy-zk
+make deploy-zk-local
 ```
 
 This will deploy a mock price feed and a fund me contract to the zkSync node.

@@ -26,11 +26,11 @@ update:; forge update
 
 build:; forge build
 
-zkbuild: forge build --zksync
+zkbuild:; forge build --zksync
 
 test :; forge test 
 
-zktest: foundryup-zksync && forge test --zksync && foundryup
+zktest:; foundryup-zksync && forge test --zksync && foundryup
 
 snapshot :; forge snapshot
 
