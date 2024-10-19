@@ -30,7 +30,7 @@ zkbuild:; forge build --zksync
 
 test :; forge test 
 
-zktest:; foundryup-zksync && forge test --zksync && foundryup
+zktest:; forge test --zksync 
 
 snapshot :; forge snapshot
 
@@ -42,6 +42,7 @@ zk-anvil :; npx zksync-cli dev start
 
 # NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 NETWORK_ARGS_LOCAL := --rpc-url http://localhost:8545 --account defaultKey --broadcast
+NETWORK_ARGS_ZK_LOCAL :=  --rpc-url http://127.0.0.1:8011 --private-key $(DEFAULT_ZKSYNC_LOCAL_KEY) --broadcast
 NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account God --sender $(SENDER_ADDRESS) --broadcast
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
@@ -63,10 +64,23 @@ deploy-zk-sepolia:
 
 
 # For deploying Interactions.s.sol:FundFundMe as well as for Interactions.s.sol:WithdrawFundMe we have to include a sender's address `--sender <ADDRESS>`.
-SENDER_ADDRESS := <sender's address> 
+SENDER_ADDRESS := 0xB58634C4465D93A03801693FD6d76997C797e42A
 
-fund:
+fund-sepolia:
 	@forge script script/Interactions.s.sol:FundFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
 
-withdraw:
+fund-local:
+	@forge script script/Interactions.s.sol:FundFundMe --sender 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 $(NETWORK_ARGS_LOCAL)
+
+# fund-zk-local:
+# 	@forge script script/Interactions.s.sol:FundFundMe --sender 0x36615Cf349d7F6344891B1e7CA7C72883F5dc049 $(NETWORK_ARGS_ZK_LOCAL) // Not yet working
+
+withdraw-sepolia:
 	@forge script script/Interactions.s.sol:WithdrawFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
+
+withdraw-local:
+	@forge script script/Interactions.s.sol:WithdrawFundMe --sender 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 $(NETWORK_ARGS_LOCAL)
+
+# withdraw-zk-local:
+# 	@forge script script/Interactions.s.sol:WithdrawFundMe --sender 0x36615Cf349d7F6344891B1e7CA7C72883F5dc049 $(NETWORK_ARGS_ZK_LOCAL) // Not yet working
+
